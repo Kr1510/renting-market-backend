@@ -1,4 +1,4 @@
-var express = require('express');
+const express = require('express');
 const db = require('./queries');
 var { graphqlHTTP } = require('express-graphql');
 var { buildSchema } = require('graphql');
@@ -17,6 +17,7 @@ var schema = buildSchema(`
     booking(id: Int!): Booking
   },
   type User {
+    id: Int
     firstName: String
     lastName: String
     dateOfBirth: Date
@@ -24,11 +25,13 @@ var schema = buildSchema(`
     passportNumber: String
   }
   type Listing {
+    id: Int
     costPerDay: Float
     listingDate: Date
     lister: User
   },
   type Car {
+    id: Int
     vin: String
     color: String
     year: Int
@@ -38,6 +41,7 @@ var schema = buildSchema(`
     listing: Listing
   },
   type Office {
+    id: Int
     building: String
     address: String
     sqm: Float
@@ -45,6 +49,7 @@ var schema = buildSchema(`
     listing: Listing
   },
   type Booking {
+    id: Int
     startDate: Date
     endDate: Date
     totalCost: Float
@@ -54,16 +59,19 @@ var schema = buildSchema(`
   }
 `); //also need the asset
 
+
+
 // The root provides a resolver function for each API endpoint
 var root = {
+  user: db.getUser,
   listings: db.getListings,
-  cars: db.getCars,
-  car: db.getCar,
-  offices: db.getOffices,
-  office: db.getOffice,
-  listing: db.getListing,
-  bookings: db.getBookings,
-  booking: db.getBooking,
+  // cars: db.getCars,
+  // car: db.getCar,
+  // offices: db.getOffices,
+  // office: db.getOffice,
+  // listing: db.getListing,
+  // bookings: db.getBookings,
+  // booking: db.getBooking,
 };
 
 var app = express();
