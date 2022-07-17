@@ -1,5 +1,6 @@
 const express = require('express');
 const db = require('./queries');
+const mutations = require('./mutations');
 var { graphqlHTTP } = require('express-graphql');
 var { buildSchema } = require('graphql');
 const cors = require('cors');
@@ -10,6 +11,7 @@ var schema = buildSchema(`
 
   type Query {
     listings(userId: Int!): [Listing]
+    listing(id: Int!): Listing
     cars: [Car]
     car(id: Int!): Car
     offices: [Office]
@@ -39,7 +41,7 @@ var schema = buildSchema(`
     manufacturer: String
     range: String
     model: String
-    listing: Listing
+    listingId: Int
   },
   type Office {
     id: Int
@@ -47,7 +49,7 @@ var schema = buildSchema(`
     address: String
     sqm: Float
     superintendant: String
-    listing: Listing
+    listingId: Int
   },
   type Booking {
     id: Int
@@ -58,6 +60,10 @@ var schema = buildSchema(`
     renter: User
     listing: Listing
   }
+
+  type Mutation {
+    bookCar(listingId: Int!, startDate: Date!, endDate: Date!, renterId: Int!): Boolean
+  }
 `); //also need the asset
 
 
@@ -66,13 +72,15 @@ var schema = buildSchema(`
 var root = {
   user: db.getUser,
   listings: db.getListings,
+  listing: db.getListing,
   cars: db.getCars,
-  // car: db.getCar,
+  car: db.getCar,
   offices: db.getOffices,
   // office: db.getOffice,
-  // listing: db.getListing,
   bookings: db.getBookings,
   // booking: db.getBooking,
+
+  bookCar: mutations.bookCar
 };
 
 var app = express();

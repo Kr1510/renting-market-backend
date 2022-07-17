@@ -23,11 +23,29 @@ var getListings = async(args) => {
   }
 }
 
+var getListing = async(args) => {
+  try {
+    console.log(args.id)
+    console.log(await client.query('SELECT * FROM public."AssetListing" WHERE "id" = $1'), [args.id])
+    return await (await client.query('SELECT * FROM public."AssetListing" WHERE "id" = $1'), [args.id]).rows
+  } catch (err) {
+    throw new Error("Could not get listing")
+  }
+}
+
 var getCars = async(args) => {
   try {
     return await (await client.query('SELECT * FROM public."Car"')).rows
   } catch (err) {
     throw new Error("Could not get cars")
+  }
+}
+
+var getCar = async(args) => {
+  try {
+    return await (await client.query('SELECT * FROM public."Car" WHERE "id" = $1', [args.id])).rows[0]
+  } catch (err) {
+    throw new Error("Could not get user")
   }
 }
 
@@ -48,6 +66,7 @@ var getBookings = async(args) => {
 }
 
 
+
 // const Pool = require('pg').Pool
 // const pool = new Pool({
 //   user: 'postgres',
@@ -66,32 +85,11 @@ var getBookings = async(args) => {
 //   })
 // }
 
-// const getCar = (request, response) => {
-//   const id = parseInt(request.params.id)
-
-//   pool.query('SELECT * FROM public."Car" WHERE id = $1', [id], (error, results) => {
-//     if (error) {
-//       throw error
-//     }
-//     response.status(200).json(results.rows)
-//   })
-// }
 
 // const getOffice = (request, response) => {
 //   const id = parseInt(request.params.id)
 
 //   pool.query('SELECT * FROM public."Office" WHERE id = $1', [id], (error, results) => {
-//     if (error) {
-//       throw error
-//     }
-//     response.status(200).json(results.rows)
-//   })
-// }
-
-// const getListing = (request, response) => {
-//   const id = parseInt(request.params.id)
-
-//   pool.query('SELECT * FROM public."Listing" WHERE id = $1', [id], (error, results) => {
 //     if (error) {
 //       throw error
 //     }
@@ -115,10 +113,10 @@ module.exports = {
   getUser,
   getListings,
   getCars,
-  // getCar,
+  getCar,
   getOffices,
   // getOffice,
-  // getListing,
+  getListing,
   getBookings,
   // getBooking
 }

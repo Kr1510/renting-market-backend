@@ -1,5 +1,4 @@
 const express = require('express');
-const db = require('./queries');
 const bodyParser = require('body-parser')
 const app = express();
 const port = 5000;
