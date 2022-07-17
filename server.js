@@ -68,7 +68,7 @@ var root = {
   listings: db.getListings,
   cars: db.getCars,
   // car: db.getCar,
-  // offices: db.getOffices,
+  offices: db.getOffices,
   // office: db.getOffice,
   // listing: db.getListing,
   // bookings: db.getBookings,

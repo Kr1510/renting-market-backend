@@ -31,6 +31,14 @@ var getCars = async(args) => {
   }
 }
 
+var getOffices = async(args) => {
+  try {
+    return await (await client.query('SELECT * FROM public."Office"')).rows
+  } catch (err) {
+    throw new Error("Could not get offices")
+  }
+}
+
 
 // const Pool = require('pg').Pool
 // const pool = new Pool({
@@ -54,15 +62,6 @@ var getCars = async(args) => {
 //   const id = parseInt(request.params.id)
 
 //   pool.query('SELECT * FROM public."Car" WHERE id = $1', [id], (error, results) => {
-//     if (error) {
-//       throw error
-//     }
-//     response.status(200).json(results.rows)
-//   })
-// }
-
-// var getOffices = (request, response) => {
-//   pool.query('SELECT * FROM public."Office"', (error, results) => {
 //     if (error) {
 //       throw error
 //     }
@@ -118,7 +117,7 @@ module.exports = {
   getListings,
   getCars,
   // getCar,
-  // getOffices,
+  getOffices,
   // getOffice,
   // getListing,
   // getBookings,
