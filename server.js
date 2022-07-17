@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('./queries');
 var { graphqlHTTP } = require('express-graphql');
 var { buildSchema } = require('graphql');
+const cors = require('cors');
 
 // Construct a schema, using GraphQL schema language
 var schema = buildSchema(`
@@ -65,7 +66,7 @@ var schema = buildSchema(`
 var root = {
   user: db.getUser,
   listings: db.getListings,
-  // cars: db.getCars,
+  cars: db.getCars,
   // car: db.getCar,
   // offices: db.getOffices,
   // office: db.getOffice,
@@ -75,10 +76,14 @@ var root = {
 };
 
 var app = express();
+
+app.use(cors());
 app.use('/graphql', graphqlHTTP({
   schema: schema,
   rootValue: root,
   graphiql: true,
 }));
+
+
 app.listen(4000);
 console.log('Running a GraphQL API server at http://localhost:4000/graphql');
