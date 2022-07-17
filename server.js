@@ -1,17 +1,19 @@
 var express = require('express');
+const db = require('./queries');
 var { graphqlHTTP } = require('express-graphql');
 var { buildSchema } = require('graphql');
 
 // Construct a schema, using GraphQL schema language
 var schema = buildSchema(`
+  scalar Date
+
   type Query {
-    hello: String
     listings(userId: Int!): [Listing]
     cars: [Car]
     car(id: Int!): Car
     offices: [Office]
     office(id: Int!): Office
-    bookings(userId: Int!): [Bookings]
+    bookings(userId: Int!): [Booking]
     booking(id: Int!): Booking
   },
   type User {
@@ -52,50 +54,16 @@ var schema = buildSchema(`
   }
 `); //also need the asset
 
-var getListings = (args) => {
-  //args.userId
-  return [];
-}
-var getCars = (args) => {
-  return [];
-}
-var getCar = (args) => {
-  //args.id
-  return {};
-}
-var getOffices = (args) => {
-  return [];
-}
-var getOffice = (args) => {
-  //args.id
-  return {};
-}
-var getListing = (args) => {
-  //args.id
-  return {};
-}
-var getBookings = (args) => {
-  //args.id
-  return {};
-}
-var getBooking = (args) => {
-  //args.id
-  return {};
-}
-
 // The root provides a resolver function for each API endpoint
 var root = {
-  hello: () => {
-    return 'Hello world!';
-  },
-  listings: getListings,
-  cars: getCars,
-  car: getCar,
-  offices: getOffices,
-  office: getOffice,
-  listing: getListing,
-  bookings: getBookings,
-  booking:getBooking,
+  listings: db.getListings,
+  cars: db.getCars,
+  car: db.getCar,
+  offices: db.getOffices,
+  office: db.getOffice,
+  listing: db.getListing,
+  bookings: db.getBookings,
+  booking: db.getBooking,
 };
 
 var app = express();
