@@ -71,7 +71,7 @@ var root = {
   offices: db.getOffices,
   // office: db.getOffice,
   // listing: db.getListing,
-  // bookings: db.getBookings,
+  bookings: db.getBookings,
   // booking: db.getBooking,
 };
 

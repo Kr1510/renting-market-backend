@@ -39,6 +39,14 @@ var getOffices = async(args) => {
   }
 }
 
+var getBookings = async(args) => {
+  try {
+    return await (await client.query('SELECT * FROM public."Booking" WHERE "renterId" = $1'), [args.userId]).rows
+  } catch (err) {
+    throw new Error("Could not get bookings")
+  }
+}
+
 
 // const Pool = require('pg').Pool
 // const pool = new Pool({
@@ -91,15 +99,6 @@ var getOffices = async(args) => {
 //   })
 // }
 
-// var getBookings = (request, response) => {
-//   pool.query('SELECT * FROM public."Booking"', (error, results) => {
-//     if (error) {
-//       throw error
-//     }
-//     response.status(200).json(results.rows)
-//   })
-// }
-
 // const getBooking = (request, response) => {
 //   const id = parseInt(request.params.id)
 
@@ -120,6 +119,6 @@ module.exports = {
   getOffices,
   // getOffice,
   // getListing,
-  // getBookings,
+  getBookings,
   // getBooking
 }
